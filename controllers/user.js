@@ -28,7 +28,7 @@ exports.register = async (req, res) => {
     }
     let result1 = await userModel.findOne({ email: email })
     if (result1) {
-        res.json("this email is already taken please try with another email")
+        res.json("this email is already taken please try with another email!!!")
     } else {
         
         let salt = await bcrypt.genSalt(10);
