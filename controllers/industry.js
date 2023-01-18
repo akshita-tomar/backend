@@ -47,23 +47,23 @@ exports.create_data = async (req, res) => {
 
 
 // ######################## get_industry################
-// exports.get_industry = async (req, res) => {
-//     let result = await industry1.find()
-//     res.json(result)
-// }
-
 exports.get_industry = async (req, res) => {
+    let result = await industry1.find()
+    res.json(result)
+}
 
-    let result = await industry1.aggregate([
+// exports.get_industry = async (req, res) => {
+
+//     let result = await industry1.aggregate([
     
-        {
-            $lookup: {
-                from: "hardskills",
-                localField: "_id",
-                foreignField: "industry_id",
-                as: "details",
-            },
-        },
+//         {
+//             $lookup: {
+//                 from: "hardskills",
+//                 localField: "_id",
+//                 foreignField: "industry_id",
+//                 as: "details",
+//             },
+//         },
         
         // {
         //     $lookup:{
@@ -81,9 +81,9 @@ exports.get_industry = async (req, res) => {
         //          _id:1
         //     }
         // }
-    ])
-    res.json(result)
-}
+//     ])
+//     res.json(result)
+// }
 
 
 

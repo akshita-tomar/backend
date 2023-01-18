@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 
-const industry1 = require('../crud/modals/industry')
+// const industry1 = require('../crud/modals/industry.')
 
 const softskill1 = require('../crud/modals/softskill')
 const language1 = require('../crud/modals/language')

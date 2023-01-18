@@ -1,7 +1,6 @@
 {
   "name": "crud",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -24,5 +23,15 @@
     "nodemon": "^2.0.20",
     "otp-generator": "^4.0.0",
     "router": "^1.3.7"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/akshita-tomar/backend.git"
+  },
+  "bugs": {
+    "url": "https://github.com/akshita-tomar/backend/issues"
+  },
+  "homepage": "https://github.com/akshita-tomar/backend#readme",
+  "description": ""
 }
