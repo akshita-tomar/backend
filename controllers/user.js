@@ -8,6 +8,7 @@ let otpgenerator = require("otp-generator")
 let nodemailer = require("nodemailer");
 var dateTime = require('node-datetime');
 const SMTPConnection = require("nodemailer/lib/smtp-connection");
+let alert=require("alert")
 
 
 
@@ -17,18 +18,19 @@ exports.register = async (req, res) => {
     let emailFormat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     let minNumberofChars = 8;
 
-    if (!username || !email || !password||!profile) {
-        res.json("paramaters can't be empty")
+    if (!username || !email || !password) {
+        return res.json("paramaters can't be empty")
+    
     }
     else if (!(emailFormat.test(email))) {
-        res.json("please enter a valid email")
+         return res.json("please enter a valid email")
     }
     else if (!(password.length > minNumberofChars)) {
-        res.json("password length must be above eight")
+        return res.json("password length must be above eight")
     }
     let result1 = await userModel.findOne({ email: email })
     if (result1) {
-        res.json("this email is already taken please try with another email")
+       return res.json("this email is already taken please try with another email")
     } else {
         
         let salt = await bcrypt.genSalt(10);
@@ -41,7 +43,7 @@ exports.register = async (req, res) => {
         }
         
         let result2 = await userModel.create(obj)
-        res.send(obj)
+        return res.send(obj)
     }
 }
 
@@ -52,12 +54,12 @@ exports.register = async (req, res) => {
 exports.login = async (req, res) => {
     let { email, password } = req.body;
     if (!password || !email) {
-        res.json("parameters cannot be empty")
+       return res.json("parameters cannot be empty")
     }
     let result = await userModel.findOne({ email: email })
 
     if (!result) {
-        res.send("this email is not registered")
+        return res.send("this email is not registered")
     } else {
         let comparepass = await bcrypt.compare(password, result.password)
         if (comparepass) {
@@ -65,10 +67,10 @@ exports.login = async (req, res) => {
             let obj = {
                 token: tok,
             }
-            res.json(obj)
+            return res.json(obj)
         }
         else {
-            res.json("password dosen't match")
+            return res.json("password dosen't match")
         }
     }
 }
@@ -80,11 +82,11 @@ exports.login = async (req, res) => {
 exports.forget_password = async (req, res) => {
     let { email } = req.body;
     if (!email) {
-        res.json("email is required ")
+        return res.json("email is required ")
     }
     let result = await userModel.findOne({ email: email })
     if (!result) {
-        res.json("user not found")
+        return res.json("user not found")
     }
     else {
         
@@ -117,9 +119,9 @@ exports.forget_password = async (req, res) => {
         transporter.sendMail(mailDetails,
             (error, data) => {
                 if (error) {
-                    res.json(" " + error)
+                    return res.json(" " + error)
                 } else {
-                    res.json("otp sent to your email")
+                    return res.json("otp sent to your email")
                 }
             })
     }
@@ -134,13 +136,13 @@ exports.reset_password = async (req, res) => {
  let { email, password, confirm_password} = req.body;
     if (!email || !password || !confirm_password) {
 
-        res.json("fill all the parameters(email,password,confirm password)")
+        return res.json("fill all the parameters(email,password,confirm password)")
     }
     let result = await userModel.findOne({email: email})
     if (result) {
           if (result.otp_verified==false)
           {
-            res.json("you cannot update password without verification")
+            return  res.json("you cannot update password without verification")
         } 
         else {
             let pass = password;
@@ -154,13 +156,13 @@ exports.reset_password = async (req, res) => {
                         otp_verified:false
                     }
                 })
-                res.json("password updated")
+                return res.json("password updated")
             } else {
-                res.json("confirm password dosen't match with password")
+                return res.json("confirm password dosen't match with password")
             }
         }
     } else {
-        res.json("email not recognised")
+        return res.json("email not recognised")
     }
 }
 
@@ -171,7 +173,7 @@ exports.reset_password = async (req, res) => {
 exports.resend_otp = async (req, res) => {
     let { email } = req.body;
     if (!email) {
-        res.json("please fill the email ")
+        return res.json("please fill the email ")
     }
     let result = await userModel.findOne({ email: email })
     if (result) {
@@ -205,13 +207,13 @@ exports.resend_otp = async (req, res) => {
         transporter.sendMail(mailDetails,
             (error, data) => {
                 if (error) {
-                    res.json(" " + error)
+                    return res.json(" " + error)
                 } else {
-                    res.json("otp sent to your email")
+                    return res.json("otp sent to your email")
                 }
             })
     } else {
-        res.json("email is not registered")
+        return res.json("email is not registered")
     }
 
 }
@@ -222,7 +224,7 @@ exports.resend_otp = async (req, res) => {
 exports.verify_otp = async (req, res) => {
     let { email, otp } = req.body;
     if (!email || !otp) {
-        res.json("parameters(email and otp) cannot be empty")
+        return res.json("parameters(email and otp) cannot be empty")
     }
     let result1 = await userModel.findOne({ email: email })
     if (result1) {
@@ -240,16 +242,16 @@ exports.verify_otp = async (req, res) => {
                     otp_createdAt:new Date(),
                 }
             })
-            res.json("otp verified")
+            return res.json("otp verified")
 
         } else {
-            res.json("otp is not correct")
+            return res.json("otp is not correct")
         }
     }else{
-        res.json("otp time expired please resend otp")
+        return res.json("otp time expired please resend otp")
     }
     } else {
-        res.json("email is not recognised")
+        return res.json("email is not recognised")
     }
 
 }

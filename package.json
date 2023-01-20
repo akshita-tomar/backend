@@ -24,7 +24,6 @@
     "otp-generator": "^4.0.0",
     "router": "^1.3.7"
   },
-  "devDependencies": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/akshita-tomar/backend.git"
