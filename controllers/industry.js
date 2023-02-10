@@ -1,6 +1,5 @@
 let industry1 = require("../modals/industry")
 const hardskill = require("../modals/hardskill");
-const { Types } = require("mongoose");
 
 
 
@@ -8,7 +7,7 @@ const { Types } = require("mongoose");
 exports.create_data = async (req, res) => {
     let industry_ = ["IT", "FINANCE"]
     for (let i = 0; i < industry_.length; i++) {
-        let industry = new industry1({ name: industry_[i] })
+        let industry = new industry1({ name: industry_[i]})
         industry.save().then(async (data) => {
             if (data.name == "IT") {
                 let arr = ["backend", "frontend", "UI/UX"]
@@ -17,7 +16,8 @@ exports.create_data = async (req, res) => {
                     await hardskill.create([
                         {
                             industry_id: data._id,
-                            skill: arr[i]
+                            skill: arr[i],
+                            
                         },
 
                     ])
@@ -30,14 +30,15 @@ exports.create_data = async (req, res) => {
                     await hardskill.create([
                         {
                             industry_id: data._id,
-                            skill: arr2[i]
+                            skill: arr2[i],
+                           
                         },
 
                     ]);
 
             }
 
-            res.json("success");
+           return res.send("success");
 
         })
     }
@@ -49,7 +50,7 @@ exports.create_data = async (req, res) => {
 // ######################## get_industry################
 exports.get_industry = async (req, res) => {
     let result = await industry1.find()
-    res.json(result)
+     return res.json(result)
 }
 
 // exports.get_industry = async (req, res) => {
