@@ -283,24 +283,29 @@ exports.verify_otp = async (req, res) => {
 
 // ######################################## change password###################
 exports.change_password = async (req, res) => {
-    let { password, new_password } = req.body
-    if (!password || !new_password) {
+    let { password, new_password,email} = req.body
+    if (!password || !new_password||!email) {
 
         return res.send("fill the parameter")
     }
-    console.log(req.result.password)
-    console.log(req.result.email)
-    let result = await userModel.findById({ _id: req.result.id })
-    if (result) {
-        let newpass = new_password
-        await bcrypt.compare({ password: req.result.password }, {
-            $set: {
-                password: newpass,
+    let result=await userModel.findOne({email:email})
+    if(result){
+       let result2=  bcrypt.compare({password:result.password})
+       if(result2){
+        let salt = await bcrypt.genSalt(10);
+        let passhash = await bcrypt.hash(new_password, salt)
+        await userModel.findOneAndUpdate({email:email},{
+            $set:{
+                password:passhash
             }
         })
-
-    } else {
-        return res.send("unauthorized user")
+        await userModel.create(obj)
+        return res.send("password updated")
+       }else{
+        return res.send("you are entering wrong password")
+       }
+    }else{
+        return res.send("entering wrong email")
     }
-
+    
 }

@@ -61,6 +61,12 @@ module.exports=(app)=>{
   //post company
  app.post("/post_company",auth,company.post_company)
 
+ //get company details
+ app.get("/get_company",auth,company.get_company)
+
+ //update company
+ app.post("/update_company",auth,company.update_company)
+
  //post candidate
  app.post("/post_candidate",auth,candidate.post_candidate)
 
