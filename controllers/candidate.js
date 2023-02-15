@@ -38,7 +38,8 @@ exports.post_candidate = async (req, res) => {
    });
 
 
-
+     
+   let candidatetype="candidatetype"
    let candidatedetils = {
       candidateID: req.result.id,
       firstname: firstname,
@@ -49,6 +50,7 @@ exports.post_candidate = async (req, res) => {
       hardskills: hardskills,
       softskills: softskills,
       languages: language1,
+      type:candidatetype
    }
    await candidate.create(candidatedetils)
       .then(async (data) => {
@@ -65,3 +67,12 @@ exports.post_candidate = async (req, res) => {
 }
 
 
+// ###################################get all the candidates###############
+  
+exports.get_candidates=async (req,res)=>{
+      let result=await candidate.find()
+      let total_candidates=result.length
+      console.log(total_candidates)
+      return res.send(result)
+      
+}

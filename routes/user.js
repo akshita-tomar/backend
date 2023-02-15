@@ -67,11 +67,24 @@ module.exports=(app)=>{
  //update company
  app.post("/update_company",auth,company.update_company)
 
+ //get companies
+ app.get("/get_companies",auth,company.get_companies)
+
  //post candidate
  app.post("/post_candidate",auth,candidate.post_candidate)
 
+ //get candidates
+ app.get("/get_candidates",auth,candidate.get_candidates)
+
  //post job 
  app.post("/post_job",auth,postjob.post_job)
+
+ //get jobs
+ app.get("/get_jobs",auth,postjob.get_jobs)
+
+
+ //get jobs candidate and companies
+ app.get("/get_data",auth,postjob.get_data)
 
 }
 

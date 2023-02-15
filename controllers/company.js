@@ -41,7 +41,7 @@ exports.post_company = async (req, res) => {
         return res.send("this website is already registered")
     }
     
-    
+    let companytype="companytype"
     
     let companydetails = {
         userID:req.result.id,
@@ -55,7 +55,8 @@ exports.post_company = async (req, res) => {
         company_contact_no: company_contact_no,
         company_address: company_address,
         website: website,
-        status: status
+        status: status,
+        type:companytype
     }
    
     await company.create(companydetails)
@@ -88,7 +89,7 @@ exports.get_company=async (req,res)=>{
 }
 
 
-// ######################update comoany###################
+// ######################update company###################
 exports.update_company=async (req,res)=>{
     var logo = "";
 
@@ -136,6 +137,16 @@ exports.update_company=async (req,res)=>{
     return res.send("record updated successfully")
 
 }
+
+
+// ########################### get all companies####################
+exports.get_companies=async (req,res)=>{
+      let result = await company.find()
+      let total_companies=result.length;
+      console.log(total_companies)
+      return res.send(result)
+}
+
 
 
 

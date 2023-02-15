@@ -18,6 +18,7 @@
     "express-fileupload": "^1.4.0",
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^6.8.2",
+    "mongoose-paginate-v2": "^1.7.1",
     "multer": "^1.4.5-lts.1",
     "nit": "^0.0.5",
     "node-datetime": "^2.1.2",
@@ -35,6 +36,5 @@
     "url": "https://github.com/akshita-tomar/backend/issues"
   },
   "homepage": "https://github.com/akshita-tomar/backend#readme",
-  "devDependencies": {},
   "description": ""
 }

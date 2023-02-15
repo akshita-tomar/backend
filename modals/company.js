@@ -1,4 +1,5 @@
 let mongoose=require("mongoose")
+const mongoosePaginate = require("mongoose-paginate-v2");
 let companySchema=new mongoose.Schema({
     userID:{type:mongoose.Schema.ObjectId},
     company_name:{type:String},
@@ -12,7 +13,9 @@ let companySchema=new mongoose.Schema({
     company_address:{type:String},
     website:{type:String},
     status:{type:String},
+    type:{type:String}
 
 },{timestamps:true})
+companySchema.plugin(mongoosePaginate);
 let company= mongoose.model("company",companySchema)
 module.exports=company
