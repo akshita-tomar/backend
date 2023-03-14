@@ -1,5 +1,6 @@
 let mongoose=require("mongoose")
 const mongoosePaginate = require("mongoose-paginate-v2");
+const DateTime = require("node-datetime/src/datetime");
 let companySchema=new mongoose.Schema({
     userID:{type:mongoose.Schema.ObjectId},
     company_name:{type:String},
@@ -14,6 +15,7 @@ let companySchema=new mongoose.Schema({
     website:{type:String},
     status:{type:String},
     type:{type:String}
+
 
 },{timestamps:true})
 companySchema.plugin(mongoosePaginate);

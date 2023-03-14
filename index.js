@@ -4,7 +4,8 @@ const bodyParser = require('body-parser');
 const fileUpload = require('express-fileupload');
 let mongoose=require('mongoose');
 const cors = require('cors');
-const { application } = require("express");
+
+
 
 
 
@@ -13,10 +14,14 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json());
 app.use(express.static(`${__dirname}/public`));
+
+
 app.use(fileUpload());
 app.use(cors({
     origin: '*'
 }));
+
+
 require('./routes/user')(app);
 
 
@@ -37,6 +42,8 @@ mongoose.connect("mongodb://127.0.0.1:27017/gig?readPreference=primary&directCon
 app.use(express.text());
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
+
+
 
 
 

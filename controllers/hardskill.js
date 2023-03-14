@@ -8,7 +8,6 @@ let hardskill = require("../modals/hardskill")
 // }
 
 
-
 exports.get_hardskill = async (req, res) => {
 let result= await hardskill.find()
 .populate("industry_id")

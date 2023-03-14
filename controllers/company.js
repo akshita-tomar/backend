@@ -5,6 +5,7 @@ let userModel=require("../modals/user")
 
 
 
+// ########################  post company  #####################
 
 exports.post_company = async (req, res) => {
     
@@ -14,21 +15,22 @@ exports.post_company = async (req, res) => {
     if (req.files) {
         var file = req.files.company_logo;
 
-        if (file.mimetype == "image/jpeg" || file.mimetype == "image/png" || file.mimetype == "image/gif") {
+        if (file.mimetype == "image/jpeg" || file.mimetype == "image/png" || file.mimetype == "image/jpg") {
 
             logo = req.protocol + "://" + req.headers.host + '/uploads/logo/' + file.name;
 
-            file.mv('uploads/logo/' + file.name, function (err) {
+            file.mv('public/uploads/logo/' + file.name, function (err) {
 
             });
 
         } else {
-            return res.send({ message: "This format is not allowed , please upload file with '.png','.gif','.jpg'" })
+            return res.send({ message: "This format is not allowed , please upload file with '.png','.gif','.jpg',jpeg" })
         }
+    
     }
     let {company_name, company_type, employee_strength, summary, vision, GST_identification_no, company_contact_no, company_address, website, status } = req.body;
     
-    if (!company_name || !company_type || !employee_strength || !summary || !vision || !GST_identification_no || !company_contact_no || !company_address || !website || !status) {
+    if (!company_name || !company_type || !employee_strength || !summary || !vision || !GST_identification_no || !company_contact_no || !company_address || !website || !status||!logo) {
         return res.send("Fill all the parameters")
     }
     let result1 = await company.findOne({ company_name: company_name })
@@ -78,7 +80,8 @@ exports.post_company = async (req, res) => {
 
 // #########################get company details#################
 exports.get_company=async (req,res)=>{
-   console.log(req.result.id)
+
+ console.log(req.result.id)
  let result= await company.findOne({userID:req.result.id})
  if(result){
     return res.send(result)
@@ -97,22 +100,21 @@ exports.update_company=async (req,res)=>{
         var file = req.files.company_logo;
 
     
-
-        if (file.mimetype == "image/jpeg" || file.mimetype == "image/png" || file.mimetype == "image/gif") {
+        if (file.mimetype == "image/jpeg" || file.mimetype == "image/png" || file.mimetype == "image/jpg") {
 
             logo = req.protocol + "://" + req.headers.host + '/uploads/logo/' + file.name;
 
-            file.mv('uploads/logo/' + file.name, function (err) {
+            file.mv('public/uploads/logo/' + file.name, function (err) {
 
             });
 
         } else {
-            return res.send({ message: "This format is not allowed , please upload file with '.png','.gif','.jpg'" })
+            return res.send("This format is not allowed , please upload file with '.png','jpg'")
         }
     }
     
     let {company_name, company_type, employee_strength, summary, vision, GST_identification_no, company_contact_no, company_address, website, status } = req.body;
-    if (!company_name || !company_type || !employee_strength || !summary || !vision || !GST_identification_no || !company_contact_no || !company_address || !website || !status) {
+    if (!company_name || !company_type || !employee_strength || !summary || !vision || !GST_identification_no || !company_contact_no || !company_address || !website || !status||!logo) {
         return res.send("Fill all the parameters")
     }
     
@@ -147,9 +149,14 @@ exports.get_companies=async (req,res)=>{
       return res.send(result)
 }
 
-
-
-
+//get company profile
+exports.get_company_profile=async (req,res)=>{
+    let result= await company.findOne({_id:req.query.id})
+    if(!result){
+        return res.send("unidentified user")
+    }
+    return res.send(result)
+}
 
 
 

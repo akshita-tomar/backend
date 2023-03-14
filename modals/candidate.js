@@ -1,18 +1,20 @@
-let mongoose=require("mongoose")
+let mongoose = require("mongoose")
 const mongoosePaginate = require("mongoose-paginate-v2");
-let candidateSchema=new mongoose.Schema({
-    candidateID:{type:mongoose.Schema.ObjectId},
-    firstname:{type:String},
-    lastname:{type:String},
-    location:{type:String},
-    heighest_qualification:{type:String},
-    about:{type:String},
-    hardskills:{type:Array},
-    softskills:{type:Array},
-    languages:{type:Array},
-    type:{type:String}
-
-},{timestamps:true})
+let candidateSchema = new mongoose.Schema({
+    candidateID: { type: mongoose.Schema.ObjectId },
+    firstname: { type: String },
+    candidate_profile: { type: String },
+    lastname: { type: String },
+    location: { type: String },
+    heighest_qualification: { type: String },
+    about: { type: String },
+    hardskills: { type: Array },
+    softskills: { type: Array },
+    languages: { type: Array },
+    type: { type: String },
+    education: { type: Array },
+    work_experience: { type: Array },
+}, { timestamps: true })
 candidateSchema.plugin(mongoosePaginate);
-let candidate=mongoose.model("candidate",candidateSchema)
-module.exports=candidate
+let candidate = mongoose.model("candidate", candidateSchema)
+module.exports = candidate

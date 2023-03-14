@@ -61,7 +61,7 @@ exports.register = async (req, res) => {
 
 // #########################user login###################
 exports.login = async (req, res) => {
-    let { email, password } = req.body;
+    let { email, password, username } = req.body;
     if (!password || !email) {
         return res.json("parameters cannot be empty")
     }
@@ -73,6 +73,7 @@ exports.login = async (req, res) => {
     }
 
     else {
+
         let comparepass = await bcrypt.compare(password, result.password)
         if (comparepass) {
             // let tok = await jwt.sign(req.body, "HHH")
@@ -81,7 +82,9 @@ exports.login = async (req, res) => {
             // }
             const token = jwt.sign({
                 id: result._id,
-                password
+                email: email,
+                password: password,
+                username: username,
             }, "HHH");
             var objData = result.toObject();
             objData.token = token;
@@ -283,29 +286,48 @@ exports.verify_otp = async (req, res) => {
 
 // ######################################## change password###################
 exports.change_password = async (req, res) => {
-    let { password, new_password,email} = req.body
-    if (!password || !new_password||!email) {
 
-        return res.send("fill the parameter")
+    let { password, new_password } = req.body
+
+    if (!password || !new_password) {
+
+        return res.send("fill all the parameters")
+
     }
-    let result=await userModel.findOne({email:email})
-    if(result){
-       let result2=  bcrypt.compare({password:result.password})
-       if(result2){
-        let salt = await bcrypt.genSalt(10);
-        let passhash = await bcrypt.hash(new_password, salt)
-        await userModel.findOneAndUpdate({email:email},{
-            $set:{
-                password:passhash
-            }
-        })
-        await userModel.create(obj)
-        return res.send("password updated")
-       }else{
-        return res.send("you are entering wrong password")
-       }
-    }else{
-        return res.send("entering wrong email")
+    let result = await userModel.findOne({ _id: req.result.id })
+    console.log(result)
+
+    if (!result) {
+
+        return res.send("user not found")
+
+    } else {
+
+        let ispasswordmatch = await bcrypt.compare(req.body.password, result.password)
+        console.log(ispasswordmatch)
+        if (ispasswordmatch===true) {
+
+            let salt = await bcrypt.genSalt(10);
+            let passhash = await bcrypt.hash(new_password, salt)
+            await userModel.findOneAndUpdate({ _id: req.result.id }, {
+                $set: {
+                    password: passhash,
+                }
+            })
+            return res.send("password changed")
+        } else {
+            return res.send("you are entering incorrect password")
+
+        }
     }
-    
+
+}
+
+
+
+
+// ########### get user ################
+exports.get_user=async(req,res)=>{
+   let result= await userModel.findOne({_id:req.result.id})
+   return res.send(result)
 }
