@@ -28,7 +28,9 @@ exports.upload_post = async (req, res) => {
             return res.send("This format is not allowed , please upload file with '.png','.gif','.jpg','jpeg'")
         }
     }
-
+    if(!post){
+        return res.send("you have not select any")
+    }
     let result = await userModel.findOne({ _id: req.result.id })
     if(!result){
         return res.send("unidentified user")
